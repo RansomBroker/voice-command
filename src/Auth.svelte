@@ -59,7 +59,16 @@
         gapi.auth2.getAuthInstance().signOut();
     }
 
+    /*anonim*/
+    function handleAnonymClick() {
+        isSignIn = true;
+    }
+
 </script>
+
+<svelte:head>
+    <title>Login Page</title>
+</svelte:head>
 
 {#if isSignIn}
     <App/>
@@ -68,7 +77,12 @@
         {#if (isAuthorizeButton)}
             <button class="px-5 py-5 bg-sky-500  shadow-lg rounded-lg text-white hover:bg-sky-700" on:click={handleAuthClick}>Sign In / Authorize to Google Access</button>
         {:else }
-            <button class="px-5 py-5 bg-red-500  shadow-lg rounded-lg text-white hover:bg-red-700" on:click={handleSignoutClick}>Sign Out Authorize to Google Access</button>
+            <div class="grid justify-items-center">
+                <button class="px-5 py-5 bg-red-500  shadow-lg rounded-lg text-white hover:bg-red-700" on:click={handleSignoutClick}>Sign Out Authorize to Google Access</button>
+                <p class="mt-3">Atau masuk sebagai anonim (Data anda tidak akan disimpan)
+                    <button class="underline text-blue-400" on:click={handleAnonymClick}>Masuk</button>
+                </p>
+            </div>
         {/if}
     </div>
 {/if}
