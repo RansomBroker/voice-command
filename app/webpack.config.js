@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');;
 const path = require('path');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -6,7 +6,8 @@ const prod = mode === 'production';
 
 module.exports = {
 	entry: {
-		'build/bundle': ['./src/main.js']
+		'build/bundle': ['./src/main.js'],
+		'build/inputdata' : './src/inputdata.js'
 	},
 	resolve: {
 		alias: {
@@ -55,7 +56,7 @@ module.exports = {
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
-		})
+		}),
 	],
 	devtool: prod ? false : 'source-map',
 	devServer: {
@@ -63,7 +64,7 @@ module.exports = {
 		proxy: {
 			'/api' : {
 				target: 'http://localhost:3000'
-			}
+			},
 		}
 	}
 };

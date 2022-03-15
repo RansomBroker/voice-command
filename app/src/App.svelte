@@ -1,7 +1,22 @@
 <script>
 	import Greet from './components/Greet.svelte';
 	import Sidebar from "./components/Sidebar.svelte";
+	import {onMount, afterUpdate} from "svelte";
+	import axios from "axios";
 	
+	onMount(() => {
+		axios.get('/api/getTempData')
+		.then(function (response) {
+			console.log("On Mount")
+			console.log(response)
+		})
+	});
+
+	afterUpdate(() => {
+		console.log("after Update")
+		axios.get('/api/getTempData').then(function (response) {console.log(response)})
+	});
+
 	let isClicked = false;
 	let isFinal = false;
 	let isAudioCancel = false;

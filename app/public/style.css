@@ -717,6 +717,7 @@ Ensure the default browser behavior of the `hidden` attribute.
             opacity: 0;
         }
     }
+
 @media (min-width: 640px) {
 
   .sm\:h-32 {
@@ -755,6 +756,7 @@ Ensure the default browser behavior of the `hidden` attribute.
     line-height: 2rem;
   }
 }
+
 @media (min-width: 768px) {
 
   .md\:h-32 {
@@ -794,6 +796,7 @@ Ensure the default browser behavior of the `hidden` attribute.
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 }
+
 @media (min-width: 1024px) {
 
   .lg\:text-4xl {
@@ -801,6 +804,7 @@ Ensure the default browser behavior of the `hidden` attribute.
     line-height: 2.5rem;
   }
 }
+
 @media (min-width: 1280px) {
 
   .xl\:h-36 {
