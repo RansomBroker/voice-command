@@ -9,6 +9,7 @@ gen
 
 # node module on root
 node_modules
+files
 
 #in svelte
 ./app/node_modules/
