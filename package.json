@@ -8,15 +8,6 @@
     "server": "npx nodemon server.js --ignore 'app/' ",
     "dev": "concurrently \"npm run server\" \"npm run client\" "
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/RansomBroker/voice-command.git"
-  },
-  "author": "RansomBroker",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/RansomBroker/voice-command/issues"
-  },
   "homepage": "https://github.com/RansomBroker/voice-command#readme",
   "dependencies": {
     "concurrently": "^7.0.0",
