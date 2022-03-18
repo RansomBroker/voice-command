@@ -69,7 +69,7 @@ app.get('/api/getData', async (req, res) => {
 });
 
 /*Append Data To main sheets*/
-app.post('/api/appendDataToMainSheet',  async (req, res) => {
+app.post('/api/appendData',  async (req, res) => {
     const client = await auth.getClient();
     const googleSheets = google.sheets({version: 'v4', auth: client});
 
@@ -105,37 +105,6 @@ app.post('/api/appendDataToMainSheet',  async (req, res) => {
         auth,
         spreadsheetId,
         range: "Sheet1!A1:F1",
-        valueInputOption: "RAW",
-        resource
-    }, (err, result) => {
-        if (err) {
-            res.status(400).json(err.data.error);
-        }
-        res.status(200).json({
-            "status": result.status,
-            "statusText": result.statusText,
-            "data"  : result.config.data.values,
-            "update": result.data
-        });
-    })
-});
-
-/*Append to temporary sheets*/
-app.post('/api/appendDataToTempSheet',  async (req, res) => {
-    const client = await auth.getClient();
-    const googleSheets = google.sheets({version: 'v4', auth: client});
-
-    let resource ={
-        "majorDimension" : "ROWS",
-        "values": [
-            [req.body.date, req.body.time , req.body.name, req.body.gender, req.body.homeCity, req.body.imageLink]
-        ]
-    }
-
-    await googleSheets.spreadsheets.values.append({
-        auth,
-        spreadsheetId,
-        range: "Sheet2!A:F",
         valueInputOption: "RAW",
         resource
     }, (err, result) => {

@@ -36,7 +36,7 @@
             });
 
         /*after get image id add to main sheet*/
-        await axios.post('/api/appendDataToMainSheet', {
+        await axios.post('/api/appendData', {
             date: d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear(),
             time: d.getHours()+":"+d.getMinutes()+":"+d.getSeconds(),
             name: name,
