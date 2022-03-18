@@ -11,34 +11,35 @@
     let isTableLoading = true;
 
     onMount(async () => {
-        await axios.get('/api/getTempData', {
+        await axios.get('/api/getData', {
             params: {
                 limit: 5,
-                page: page
+                page: 1,
             }
         }).then(function (response) {
             if (response.statusText === "OK"){
                 isTableLoading = false;
                 data = response.data.result;
-                pageLimit = response.data.pageLimit;
             }
         });
     });
 
     async function getPagination(page) {
-        axios.get('/api/getTempData', {
+        isTableLoading = true;
+        await axios.get('/api/getData', {
             params: {
                 limit: 5,
-                page: page
+                page: page,
             }
         }).then(function (response) {
+            isTableLoading = false;
             data = response.data.result;
             pageLimit = response.data.pageLimit;
         });
     }
 
     async function updateData(){
-        axios.get('/api/getTempData', {
+        axios.get('/api/getData', {
             params: {
                 limit: 5,
                 page: page
@@ -50,6 +51,7 @@
     }
 
     $: if (page > 0) {
+        console.log($pagestore)
         getPagination($pagestore);
     }
 
@@ -59,7 +61,7 @@
 
 </script>
 
-<table class="shadow-2xl rounded w-9/12">
+<table class="shadow-2xl rounded w-9/12 ">
     <thead>
         <tr class="border-b border-zinc-300">
             <th class="py-2 uppercase text-center text-sm text-zinc-700">Tanggal</th>

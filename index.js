@@ -34,29 +34,26 @@ app.use(express.urlencoded({extended: true}));
 app.use(morgan('tiny'));
 
 /*Get Data To Show To Table*/
-app.get('/api/getTempData', async (req, res) => {
+app.get('/api/getData', async (req, res) => {
     const client = await auth.getClient();
     const googleSheets = google.sheets({version: 'v4', auth: client});
 
     const data = await googleSheets.spreadsheets.values.get({
             auth,
             spreadsheetId,
-            range : "Sheet2!A:E"
+            range : "Sheet1!A:E"
         });
 
     let limit = req.query.limit;
     let pageLimit = Math.ceil(data.data.values.length / limit);
-    console.log(pageLimit);
-    let dataEnd =  Math.ceil(data.data.values.length / req.query.page);
-    console.log(dataEnd);
-    let dataStart =  Math.floor(dataEnd - limit)+1 === 0 ? 1: Math.floor(dataEnd - limit)+1 < 0 ? 1 : Math.floor(dataEnd - limit)+1 === 0 ? 1: Math.floor(dataEnd - limit)+1 ;
-    console.log(dataStart);
+    let dataStart = ((req.query.page * limit ) - limit) > 1 ? ((req.query.page * limit ) - limit)+1 : 1 ;
+    let dataEnd = (req.query.page * limit);
 
     /*send data to result*/
     await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
-        range : `Sheet2!A${dataStart}:E${dataEnd}`
+        range : `Sheet1!A${dataStart}:E${dataEnd}`
     }, (err, result) => {
         if (err) {
             res.status(400).json(err);
@@ -66,7 +63,7 @@ app.get('/api/getTempData', async (req, res) => {
             dataEnd: dataEnd,
             limit: limit,
             pageLimit: pageLimit,
-            result: result.data.values.reverse(),
+            result: result.data.values,
         });
     });
 });
@@ -83,10 +80,31 @@ app.post('/api/appendDataToMainSheet',  async (req, res) => {
         ]
     }
 
+    /*Create new row */
+    await googleSheets.spreadsheets.batchUpdate({
+        auth,
+        spreadsheetId,
+        resource: {
+            "requests": [
+                {
+                    "insertDimension": {
+                        "range": {
+                            "sheetId": 0,
+                            "dimension": "ROWS",
+                            "startIndex": 0,
+                            "endIndex": 1
+                        }
+                    }
+                }
+            ]
+        }
+    })
+
+    /*Then Append it*/
     await googleSheets.spreadsheets.values.append({
         auth,
         spreadsheetId,
-        range: "Sheet1!A:F",
+        range: "Sheet1!A1:F1",
         valueInputOption: "RAW",
         resource
     }, (err, result) => {
