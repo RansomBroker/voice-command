@@ -13,6 +13,10 @@
         animation: pulsate infinite 1.5s;
     }
 
+    .animate-fade-fast{
+        animation: fade-in 1s;
+    }
+
     @keyframes fade-in {
         0%{
             opacity: 0;

@@ -1,0 +1,17 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# node module on root
+node_modules
+files
+
+#in svelte
+./app/node_modules/
+./app/public/build/
+./app/.DS_Store
