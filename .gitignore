@@ -11,6 +11,8 @@ gen
 node_modules
 files
 
+credentials.json
+
 #in svelte
 ./app/node_modules/
 ./app/public/build/

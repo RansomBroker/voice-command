@@ -29,8 +29,8 @@ const auth = new google.auth.GoogleAuth({
 })
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.json({limit:'5mb'}));
+app.use(express.urlencoded({extended: true, limit:'5mb'}));
 app.use(morgan('tiny'));
 
 /*Get Data To Show To Table*/
@@ -45,27 +45,37 @@ app.get('/api/getData', async (req, res) => {
         });
 
     let limit = req.query.limit;
-    let pageLimit = Math.ceil(data.data.values.length / limit);
-    let dataStart = ((req.query.page * limit ) - limit) > 1 ? ((req.query.page * limit ) - limit)+1 : 1 ;
-    let dataEnd = (req.query.page * limit);
+    if (data.data.hasOwnProperty("values")) {
+        let pageLimit = Math.ceil((data.data.values.length > 1 ? data.data.values.length : 0) / limit);
+        let dataStart = ((req.query.page * limit ) - limit) > 1 ? ((req.query.page * limit ) - limit)+1 : 1 ;
+        let dataEnd = (req.query.page * limit);
 
-    /*send data to result*/
-    await googleSheets.spreadsheets.values.get({
-        auth,
-        spreadsheetId,
-        range : `Sheet1!A${dataStart}:E${dataEnd}`
-    }, (err, result) => {
-        if (err) {
-            res.status(400).json(err);
-        }
-        res.status(200).json({
-            dataStart : dataStart,
-            dataEnd: dataEnd,
-            limit: limit,
-            pageLimit: pageLimit,
-            result: result.data.values,
+        /*send data to result*/
+        await googleSheets.spreadsheets.values.get({
+            auth,
+            spreadsheetId,
+            range : `Sheet1!A${dataStart}:E${dataEnd}`
+        }, (err, result) => {
+            if (err) {
+                res.status(400).json(err);
+            }
+            res.status(200).json({
+                dataStart : dataStart,
+                dataEnd: dataEnd,
+                limit: limit,
+                pageLimit: pageLimit,
+                result: result.data.values,
+            });
         });
-    });
+    } else {
+        res.status(200).json({
+            limit: limit,
+            pageLimit: 0,
+            result: [],
+        });
+    }
+
+
 });
 
 /*Append Data To main sheets*/
@@ -157,5 +167,45 @@ app.post('/api/upload', multer({storage: diskStorage}).single("image"),async (re
 
 });
 
+app.post('/api/uploadImagePath',async (req, res) => {
+    const client = await auth.getClient();
+
+    const googleDrive = google.drive({version: 'v3', auth: client});
+
+    let fileMetadata = {
+        name : `${req.body.fileName}.png`,
+        parents
+    };
+
+    let media = {
+        mimeType: ['image/jpg', 'image/jpeg', 'image/png' ],
+        body: fs.createReadStream(`./files/${req.body.fileName}.png`)
+    }
+
+    await googleDrive.files.create({
+        resource: fileMetadata,
+        media,
+    }, function (err, file) {
+        if (err){
+            res.status(400).json(err);
+        }
+        res.status(200).json({
+            header: file.header,
+            status: file.status,
+            statusText: file.statusText,
+            data: file.data
+        });
+    })
+});
+
+app.post("/api/saveImage", (req, res) => {
+    const fileContent = new Buffer.from(req.body.data, 'base64');
+    fs.writeFile(`./files/${req.body.fileName}.png`, fileContent, err => {
+        if (err) {
+            res.status(400).json("Something went wrong :(");
+        }
+        res.status(200).json("success");
+    })
+})
 
 app.listen(PORT, () => console.log(`Express is running at port ${PORT}`));

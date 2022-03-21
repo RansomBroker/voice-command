@@ -2,7 +2,6 @@
     import VoiceCommand from "./VoiceCommand.svelte";
     import ShowData from "./components/ShowData.svelte";
     import GuestBook from "./GuestBook.svelte";
-
 </script>
 
 <svelte:head>
