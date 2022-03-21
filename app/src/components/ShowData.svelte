@@ -62,7 +62,7 @@
 
 </script>
 
-<table class="shadow-2xl rounded w-9/12 ">
+<table class="shadow-2xl  w-9/12 ">
     <thead>
         <tr class="border-b border-zinc-300">
             <th class="py-2 uppercase text-center text-sm text-zinc-700">Tanggal</th>
