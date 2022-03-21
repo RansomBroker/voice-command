@@ -1,10 +1,10 @@
 <script>
     import {onMount} from "svelte";
     import {pagestore} from "./pagestore.js";
+    import {updateStore} from "./updateStore.js";
     import Pagination from "./Pagination.svelte";
     import axios from "axios";
 
-    export let isUpdate = false;
     let data = [];
     let pageLimit = null;
     let page = $pagestore;
@@ -48,6 +48,7 @@
             data = response.data.result;
             pageLimit = response.data.pageLimit;
         });
+        updateStore.update(n => false);
     }
 
     $: if (page > 0) {
@@ -55,7 +56,7 @@
         getPagination($pagestore);
     }
 
-    $: if (isUpdate){
+    $: if ($updateStore){
         updateData();
     }
 
@@ -82,7 +83,7 @@
         {/each}
     {:else}
         {#each data as row, i}
-            <tr class={`${i % 2 === 0 ? "bg-zinc-300" : ""}`}>
+            <tr class={`${i % 2 === 0 ? "bg-zinc-300 hover:bg-zinc-200" : "hover:bg-zinc-200"}`}>
                 {#each row as cell, ij}
                     <td class="py-1 text-center">{cell}</td>
                 {/each}
