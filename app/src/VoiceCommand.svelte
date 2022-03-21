@@ -252,7 +252,7 @@
         </div>
     {:else }
         {#if (initialState)}
-            <p class="capitalize text-center text-base sm:text-lg animate-fade">Silahkan Mulai, Dengan <strong>Mengetuk Mikrofon</strong></p>
+            <p class="capitalize text-center text-base sm:text-lg animate-fade">Silahkan tekan mic untuk mengisi form</p>
             <!--Mic Button -->
             <button  on:click={handleStartInitial}  class="rounded-full shadow-lg md:shadow-xl xl:shadow-xl  bg-white w-28 h-28 sm:w-32 sm:h-32 md:h-32 md:w-32 xl:h-36 xl:w-36 z-50 relative z-10 p-0 m-0 animate-fade">
                 <i class="fa fa-microphone text-2xl text-black" aria-hidden="true"></i>

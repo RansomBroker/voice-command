@@ -9,6 +9,7 @@
 </svelte:head>
 
 <div class="container-2xl py-10 px-5 grid flex items-center justify-items-center m-0 animate-fade">
+    <h1 class="text-3xl my-4">Selamat Datang di masjid Al-Mutaqin</h1>
     <div class="w-full grid flex items-center justify-items-center m-0 h-96">
         <VoiceCommand/>
     </div>

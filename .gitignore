@@ -10,6 +10,7 @@ gen
 # node module on root
 node_modules
 files
+files/photo.jpg
 
 credentials.json
 
